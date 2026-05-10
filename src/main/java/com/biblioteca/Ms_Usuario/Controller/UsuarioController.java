@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/usuario")
+@RequestMapping({"/api/usuario", "/api/usuarios"})
 @RequiredArgsConstructor
 public class UsuarioController {
 
@@ -26,7 +26,7 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> obtenerPorId(@PathVariable Long id) {
-        return usuarioService.obtenerPorId().map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return usuarioService.obtenerPorId(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/buscar")

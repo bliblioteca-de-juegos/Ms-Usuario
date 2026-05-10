@@ -30,7 +30,7 @@ public class UsuarioService {
         return usuarioRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    public Optional<UsuarioResponseDTO> obtenerPorId(){
+    public Optional<UsuarioResponseDTO> obtenerPorId(Long id){
         return  usuarioRepository.findById(id).map(this::mapToDto);
     }
 
@@ -46,7 +46,7 @@ public class UsuarioService {
         return usuarioRepository.buscarPorNombreUsuario(nombreUsuario).stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    public UsuarioResponseDTO guardar(@Valid @org.jetbrains.annotations.UnknownNullability UsuarioRequestDTO dto){
+    public UsuarioResponseDTO guardar(@Valid UsuarioRequestDTO dto){
         Usuario u = new Usuario(null, dto.getNombre(), dto.getApellido(), dto.getEmail(), dto.getPassword(), dto.getNombreUsuario());
         return  mapToDto(usuarioRepository.save(u));
     }
