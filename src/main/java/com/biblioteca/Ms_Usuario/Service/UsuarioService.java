@@ -8,6 +8,7 @@ import com.biblioteca.Ms_Usuario.Repository.UsuarioRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,9 +21,10 @@ import java.util.stream.Collectors;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     private UsuarioResponseDTO mapToDto(Usuario u){
-        return new UsuarioResponseDTO(u.getId(), u.getNombre(), u.getApellido(), u.getEmail(), u.getPassword(), u.getNombreUsuario());
+        return new UsuarioResponseDTO(u.getId(), u.getNombre(), u.getApellido(), u.getEmail(), null, u.getNombreUsuario());
 
     }
 
@@ -47,7 +49,8 @@ public class UsuarioService {
     }
 
     public UsuarioResponseDTO guardar(@Valid UsuarioRequestDTO dto){
-        Usuario u = new Usuario(null, dto.getNombre(), dto.getApellido(), dto.getEmail(), dto.getPassword(), dto.getNombreUsuario());
+        Usuario u = new Usuario(null, dto.getNombre(), dto.getApellido(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), dto.getNombreUsuario());
+        log.info("Creando usuario: {}", dto.getNombreUsuario());
         return  mapToDto(usuarioRepository.save(u));
     }
 
@@ -56,7 +59,7 @@ public class UsuarioService {
             existente.setNombre(dto.getNombre());
             existente.setApellido(dto.getApellido());
             existente.setEmail(dto.getEmail());
-            existente.setPassword(dto.getPassword());
+            existente.setPassword(passwordEncoder.encode(dto.getPassword()));
             existente.setNombreUsuario(dto.getNombreUsuario());
             return  mapToDto(usuarioRepository.save(existente));
         });

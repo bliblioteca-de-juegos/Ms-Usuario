@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
@@ -14,6 +15,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Query("SELECT m from Usuario m WHERE LOWER(m.NombreUsuario) LIKE LOWER(CONCAT('%', :nombreUsuario, '%'))")
     List<Usuario> buscarPorNombreUsuario(@Param("nombreUsuario") String nombreUsuario);
+
+    @Query("SELECT m from Usuario m WHERE LOWER(m.NombreUsuario) = LOWER(:nombreUsuario)")
+    Optional<Usuario> buscarExactoPorNombreUsuario(@Param("nombreUsuario") String nombreUsuario);
 
     @Query("SELECT m from Usuario m WHERE LOWER(m.email) LIKE LOWER(CONCAT('%', :email, '%'))")
     List<Usuario> buscarPorEmail(@Param("email") String email);
