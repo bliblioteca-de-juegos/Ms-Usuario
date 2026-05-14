@@ -18,12 +18,17 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (usuarioRepository.count() > 0) {
-            log.info(">>>> Usuario ya cargado");
-            return;
-        }
-        log.info(">>>> cargando Usuario");
-        usuarioRepository.save(new Usuario(null, "david", "Martinez", "email", passwordEncoder.encode("password"),"D4V1Cyberpunk"));
-        log.info(">>>> Usuario cargado");
+        String nombreUsuario = "D4V1Cyberpunk";
+        String password = passwordEncoder.encode("password");
+
+        usuarioRepository.buscarExactoPorNombreUsuario(nombreUsuario)
+                .ifPresentOrElse(usuario -> {
+                    usuario.setPassword(password);
+                    usuarioRepository.save(usuario);
+                    log.info(">>>> Usuario semilla actualizado: {}", nombreUsuario);
+                }, () -> {
+                    usuarioRepository.save(new Usuario(null, "david", "Martinez", "email", password, nombreUsuario));
+                    log.info(">>>> Usuario semilla cargado: {}", nombreUsuario);
+                });
     }
 }
