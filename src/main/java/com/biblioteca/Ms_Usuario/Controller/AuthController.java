@@ -7,6 +7,8 @@ import com.biblioteca.Ms_Usuario.Dto.UsuarioResponseDTO;
 import com.biblioteca.Ms_Usuario.Repository.UsuarioRepository;
 import com.biblioteca.Ms_Usuario.Security.JwtService;
 import com.biblioteca.Ms_Usuario.Service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ import java.net.URI;
 @Slf4j
 @RestController
 @RequestMapping("/api/v2/auth")
+@Tag(name = "Autenticacion", description = "Operaciones de registro e inicio de sesion")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -35,6 +38,7 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping("/register")
+    @Operation(summary = "Registrar un usuario")
     public ResponseEntity<UsuarioResponseDTO> register(@Valid @RequestBody UsuarioRequestDTO dto) {
         if (usuarioRepository.buscarExactoPorNombreUsuario(dto.getNombreUsuario()).isPresent()) {
             throw new IllegalArgumentException("El nombre de usuario ya existe");
@@ -46,6 +50,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Iniciar sesion y obtener JWT")
     public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody LoginRequestDTO dto) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 dto.getNombreUsuario(),
