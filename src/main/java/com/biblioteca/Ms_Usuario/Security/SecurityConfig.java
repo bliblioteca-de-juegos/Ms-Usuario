@@ -31,9 +31,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/usuarios/*", "/api/usuario/*").permitAll()
-                        .requestMatchers("/api/usuarios/**", "/api/usuario/**").authenticated()
+                        .requestMatchers("/api/v2/auth/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v2/usuarios/*", "/api/v2/usuario/*").permitAll()
+                        .requestMatchers("/api/v2/usuarios/**", "/api/v2/usuario/**").authenticated()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) -> {
                     response.setStatus(401);

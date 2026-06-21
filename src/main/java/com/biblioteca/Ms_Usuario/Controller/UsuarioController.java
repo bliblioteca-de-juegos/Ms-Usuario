@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping({"/api/usuario", "/api/usuarios"})
+@RequestMapping({"/api/v2/usuario", "/api/v2/usuarios"})
 @RequiredArgsConstructor
 public class UsuarioController {
 

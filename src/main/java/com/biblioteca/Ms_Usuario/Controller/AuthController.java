@@ -24,7 +24,7 @@ import java.net.URI;
 
 @Slf4j
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v2/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -42,7 +42,7 @@ public class AuthController {
 
         UsuarioResponseDTO usuario = usuarioService.guardar(dto);
         log.info("Registro completado para usuario: {}", usuario.getNombreUsuario());
-        return ResponseEntity.created(URI.create("/api/usuarios/" + usuario.getId())).body(usuario);
+        return ResponseEntity.created(URI.create("/api/v2/usuarios/" + usuario.getId())).body(usuario);
     }
 
     @PostMapping("/login")
