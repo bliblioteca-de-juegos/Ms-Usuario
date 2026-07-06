@@ -1,26 +1,23 @@
 package com.biblioteca.Ms_Usuario.Config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import com.biblioteca.Ms_Usuario.Modelo.Usuario;
 import com.biblioteca.Ms_Usuario.Repository.UsuarioRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
-
-    private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public void run(String... args) {
         String nombreUsuario = "D4V1Cyberpunk";
         String password = passwordEncoder.encode("password");
-
         usuarioRepository.buscarExactoPorNombreUsuario(nombreUsuario)
                 .ifPresentOrElse(usuario -> {
                     usuario.setPassword(password);
